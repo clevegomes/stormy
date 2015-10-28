@@ -1,0 +1,135 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#66d82d"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".StormyActivity">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="100"
+        android:id="@+id/temperatureLabel"
+        android:textColor="@android:color/white"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:phoneNumber="true"
+        android:textSize="150sp"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/degreeImageView"
+        android:src="@drawable/degree"
+        android:layout_marginTop="50dp"
+        android:layout_alignTop="@+id/temperatureLabel"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5 oclock PM"
+        android:id="@+id/timeLabel"
+        android:layout_above="@+id/temperatureLabel"
+        android:layout_centerHorizontal="true"
+        android:textColor="#80ffffff"
+        android:textSize="18sp"/>
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dubai United Arab Emirates DXB"
+        android:id="@+id/locationLabel"
+        android:layout_marginBottom="60dp"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:layout_above="@+id/timeLabel"
+        android:layout_centerHorizontal="true"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/iconImageView"
+        android:src="@drawable/cloudy_night"
+        android:layout_above="@+id/locationLabel"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:weightSum="100"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/temperatureLabel"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/linearLayout">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_weight="50"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="HUMIDITY"
+                android:textColor="#80ffffff"
+                android:id="@+id/humidityLabel"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="0.88"
+                android:textSize="24sp"
+                android:textColor="#ffffffff"
+                android:id="@+id/humidityValue"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_weight="50"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="RAIN/SNOW?"
+                android:textColor="#80ffffff"
+                android:id="@+id/preciptLabel"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="100%"
+                android:gravity="center_horizontal"
+                android:textColor="#ffffffff"
+                android:textSize="24sp"
+                android:id="@+id/preciptValue"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stormy with a chance of meat balls"
+        android:id="@+id/textView"
+        android:layout_marginTop="40dp"
+        android:textSize="18sp"
+        android:textColor="#ffffffff"
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/linearLayout"
+        android:layout_centerHorizontal="true"/>
+
+
+</RelativeLayout>
