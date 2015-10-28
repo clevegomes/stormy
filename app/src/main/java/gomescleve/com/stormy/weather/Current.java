@@ -1,13 +1,15 @@
-package gomescleve.com.stormy;
+package gomescleve.com.stormy.weather;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+import gomescleve.com.stormy.R;
+
 /**
  * Created by Developer1 on 27/10/2015.
  */
-public class CurrentWeather {
+public class Current {
 
     private String mIcon;
     private long mTime;

@@ -1,10 +1,12 @@
-package gomescleve.com.stormy;
+package gomescleve.com.stormy.ui;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.os.Bundle;
+
+import gomescleve.com.stormy.R;
 
 /**
  * Created by Developer1 on 26/10/2015.
