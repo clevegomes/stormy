@@ -26,8 +26,10 @@ public class CurrentWeather {
         mTimeZone = timeZone;
     }
 
-    public double getPrecipchance() {
-        return mPrecipchance;
+    public int getPrecipchance() {
+
+        double preciptPercentage = mPrecipchance *100;
+        return (int)Math.round(preciptPercentage);
     }
 
     public void setPrecipchance(double precipchance) {
@@ -50,8 +52,10 @@ public class CurrentWeather {
         mHumidity = humidity;
     }
 
-    public double getTemperature() {
-        return mTemperature;
+    public int getTemperature() {
+
+
+        return (int) Math.round(mTemperature);
     }
 
     public void setTemperature(double temperature) {

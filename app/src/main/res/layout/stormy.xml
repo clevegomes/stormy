@@ -11,7 +11,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="100"
+        android:text="--"
         android:id="@+id/temperatureLabel"
         android:textColor="@android:color/white"
         android:layout_centerVertical="true"
@@ -32,7 +32,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="5 oclock PM"
+        android:text="..."
         android:id="@+id/timeLabel"
         android:layout_above="@+id/temperatureLabel"
         android:layout_centerHorizontal="true"
@@ -89,7 +89,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="0.88"
+                android:text="--"
                 android:textSize="24sp"
                 android:textColor="#ffffffff"
                 android:id="@+id/humidityValue"/>
@@ -112,7 +112,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="100%"
+                android:text="--"
                 android:gravity="center_horizontal"
                 android:textColor="#ffffffff"
                 android:textSize="24sp"
@@ -123,13 +123,28 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Stormy with a chance of meat balls"
-        android:id="@+id/textView"
+        android:text="Getting current weather ..."
+        android:id="@+id/summaryLabel"
         android:layout_marginTop="40dp"
         android:textSize="18sp"
         android:textColor="#ffffffff"
         android:gravity="center_horizontal"
         android:layout_below="@+id/linearLayout"
+        android:layout_centerHorizontal="true"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/refreshImageView"
+        android:src="@drawable/refresh"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_above="@+id/locationLabel"
         android:layout_centerHorizontal="true"/>
 
 
