@@ -3,8 +3,8 @@
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="#66d82d"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".StormyActivity">
+    android:background="@drawable/bg_gradient"
+                tools:context=".StormyActivity">
 
 
 
@@ -146,6 +146,29 @@
         android:id="@+id/progressBar"
         android:layout_above="@+id/locationLabel"
         android:layout_centerHorizontal="true"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/summaryLabel" android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="HOURLY"
+            android:background="#40FFFFFF"
+            android:textColor="#FFFFFFFF"
+            android:layout_weight="1"
+            android:id="@+id/hourlyButton"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#40FFFFFF"
+            android:textColor="#FFFFFFFF"
+            android:text="7 DAY"
+            android:layout_weight="1"
+            android:id="@+id/dailyButton"/>
+    </LinearLayout>
 
 
 </RelativeLayout>
