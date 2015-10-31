@@ -1,6 +1,7 @@
-package gomescleve.com.stormy.ui;
+package gomescleve.com.stormy.UI;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -27,6 +28,7 @@ import java.io.IOException;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import gomescleve.com.stormy.R;
 import gomescleve.com.stormy.weather.Current;
 import gomescleve.com.stormy.weather.Day;
@@ -36,6 +38,8 @@ import gomescleve.com.stormy.weather.Hour;
 public class StormyActivity extends AppCompatActivity {
 
     public static final String TAG = StormyActivity.class.getSimpleName();
+    public static final String DAILY_FORECAST = "DAILY_FORECAST";
+    public static final String HOURLY_FORECAST = "HOURLY_FORECAST";
     private Forecast mForecast;
 
 //    private TextView mTemperatureLabel;
@@ -56,6 +60,7 @@ public class StormyActivity extends AppCompatActivity {
 
         final double latitude = 37.8267;
         final double longitude = -122.423;
+
 //        mTemperatureLabel = (TextView)findViewById(R.id.temperatureLabel);
         ButterKnife.inject(this);
 
@@ -280,10 +285,28 @@ public class StormyActivity extends AppCompatActivity {
 
     private void alertUserAboutError() {
 
+
         AlertDialogFragment dialog = new AlertDialogFragment();
         dialog.show(getFragmentManager(),"error_dialog");
 
     }
 
+    @OnClick(R.id.dailyButton)
+    public void startDailyActivity(View view)
+    {
+        Intent intent = new Intent(this,DailyForecastActivity.class);
+        intent.putExtra(DAILY_FORECAST,mForecast.getDailyForecast());
+        startActivity(intent);
+    }
+
+
+    @OnClick(R.id.hourlyButton)
+    public void startHourlyActivity(View view)
+    {
+        Intent intent = new Intent(this,HourlyForecastActivity.class);
+        intent.putExtra(HOURLY_FORECAST,mForecast.getHourlyForecast());
+        startActivity(intent);
+
+    }
 
 }

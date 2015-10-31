@@ -11,7 +11,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".ui.StormyActivity"
+            android:name=".UI.StormyActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -21,13 +21,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.DailyForecastActivity"
+            android:name=".UI.DailyForecastActivity"
             android:label="@string/title_activity_daily_forecast"
-            android:parentActivityName=".ui.StormyActivity"
+            android:parentActivityName=".UI.StormyActivity"
             android:theme="@style/AppTheme" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="gomescleve.com.stormy.ui.StormyActivity" />
+                android:value="gomescleve.com.stormy.UI.StormyActivity" />
+        </activity>
+        <activity
+            android:name=".UI.HourlyForecastActivity"
+            android:label="@string/title_activity_hourly_forecast"
+            android:parentActivityName=".UI.StormyActivity"
+            android:theme="@style/AppTheme" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="gomescleve.com.stormy.UI.StormyActivity" />
         </activity>
     </application>
 

@@ -1,4 +1,4 @@
-package gomescleve.com.stormy.ui;
+package gomescleve.com.stormy.UI;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
