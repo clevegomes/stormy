@@ -30,6 +30,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import gomescleve.com.stormy.R;
+import gomescleve.com.stormy.sensors.GPSTracker;
 import gomescleve.com.stormy.weather.Current;
 import gomescleve.com.stormy.weather.Day;
 import gomescleve.com.stormy.weather.Forecast;
@@ -42,8 +43,13 @@ public class StormyActivity extends AppCompatActivity {
     public static final String HOURLY_FORECAST = "HOURLY_FORECAST";
     private Forecast mForecast;
 
+    public GPSTracker gps;
+
+
 //    private TextView mTemperatureLabel;
     @InjectView(R.id.temperatureLabel) TextView mTemperatureLabel;
+    @InjectView(R.id.locationLabel) TextView mLocationLabel;
+
     @InjectView(R.id.timeLabel) TextView mTimeLabel;
     @InjectView(R.id.humidityValue) TextView mHumidityValue;
     @InjectView(R.id.preciptValue) TextView mPrecipValue;
@@ -57,9 +63,27 @@ public class StormyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stormy);
+        final double latitude;
+        final double longitude;
 
-        final double latitude = 37.8267;
-        final double longitude = -122.423;
+        gps =new GPSTracker(this);
+
+        if(gps.canGetLocation())
+        {
+             latitude = gps.getLatitude();
+            longitude = gps.getLongitude();
+            Toast.makeText(getApplicationContext(),"Your Locatiion is - \nLat: "+ latitude+ "\nLong: "+
+                    longitude,Toast.LENGTH_SHORT).show();
+
+        }
+        else
+        {
+            gps.showSettingAlert();
+            latitude = 37.8267;
+            longitude = -122.423;
+        }
+
+
 
 //        mTemperatureLabel = (TextView)findViewById(R.id.temperatureLabel);
         ButterKnife.inject(this);
@@ -166,6 +190,7 @@ public class StormyActivity extends AppCompatActivity {
 
         Current current = mForecast.getCurrent();
         mTemperatureLabel.setText(current.getTemperature() + "");
+        mLocationLabel.setText(mForecast.getmLocationName());
         mTimeLabel.setText("At " + current.getFormatttedTime() + " it will be");
         mHumidityValue.setText(current.getHumidity() + "");
         mPrecipValue.setText(current.getPrecipchance() + "%");
@@ -183,6 +208,9 @@ public class StormyActivity extends AppCompatActivity {
 
         Forecast forecast = new Forecast();
 
+        JSONObject jsobj = new JSONObject(jsonData);
+
+        forecast.setmLocationName(jsobj.getString("timezone"));
         forecast.setCurrent(getCurrentDetails(jsonData));
         forecast.setHourlyForecast(getHourlyForecast(jsonData));
         forecast.setDailyForecast(getDailyForecast(jsonData));

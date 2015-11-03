@@ -8,6 +8,16 @@ import gomescleve.com.stormy.R;
 public class Forecast {
 
     private Current mCurrent;
+
+    public String getmLocationName() {
+        return mLocationName;
+    }
+
+    public void setmLocationName(String mLocationName) {
+        this.mLocationName = mLocationName;
+    }
+
+    private String mLocationName;
     private Hour[] mHourlyForecast;
     private Day[] mDailyForecast;
 
