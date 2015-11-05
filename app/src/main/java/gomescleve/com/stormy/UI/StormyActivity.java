@@ -49,7 +49,7 @@ public class StormyActivity extends AppCompatActivity {
 
 
     private Forecast mForecast;
-
+    private Temperature mTemperature;
     public GPSTracker gps;
 
 
@@ -74,9 +74,9 @@ public class StormyActivity extends AppCompatActivity {
         final double longitude;
 
 
-        Temperature temperature = new Temperature(this);
-        temperature.register();
-        float mTemperatureValue = temperature.getTemperatureSensor();
+        mTemperature = new Temperature(this);
+        mTemperature.register();
+
 
 
 
@@ -201,6 +201,11 @@ public class StormyActivity extends AppCompatActivity {
     }
 
     private void updateDisplay() {
+
+
+        float mTemperatureValue = mTemperature.getTemperatureSensor();
+        Toast.makeText(getApplicationContext(), mTemperatureValue+"", Toast.LENGTH_SHORT).show();
+
 
         Current current = mForecast.getCurrent();
         mTemperatureLabel.setText(current.getTemperature() + "");

@@ -5,6 +5,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.widget.Toast;
 
 import static android.hardware.Sensor.TYPE_AMBIENT_TEMPERATURE;
 
@@ -37,6 +38,8 @@ public class Temperature implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent event) {
 
+
+//        Toast.makeText(mContext,"temperature:"+event.values[0], Toast.LENGTH_SHORT).show();
 
         mTemperatureValue = event.values[0];
 
