@@ -3,6 +3,8 @@ package gomescleve.com.stormy.UI;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
@@ -31,16 +33,21 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import gomescleve.com.stormy.R;
 import gomescleve.com.stormy.sensors.GPSTracker;
+import gomescleve.com.stormy.sensors.Temperature;
 import gomescleve.com.stormy.weather.Current;
 import gomescleve.com.stormy.weather.Day;
 import gomescleve.com.stormy.weather.Forecast;
 import gomescleve.com.stormy.weather.Hour;
+
+import static android.hardware.Sensor.TYPE_AMBIENT_TEMPERATURE;
 
 public class StormyActivity extends AppCompatActivity {
 
     public static final String TAG = StormyActivity.class.getSimpleName();
     public static final String DAILY_FORECAST = "DAILY_FORECAST";
     public static final String HOURLY_FORECAST = "HOURLY_FORECAST";
+
+
     private Forecast mForecast;
 
     public GPSTracker gps;
@@ -65,6 +72,13 @@ public class StormyActivity extends AppCompatActivity {
         setContentView(R.layout.stormy);
         final double latitude;
         final double longitude;
+
+
+        Temperature temperature = new Temperature(this);
+        temperature.register();
+        float mTemperatureValue = temperature.getTemperatureSensor();
+
+
 
         gps =new GPSTracker(this);
 
