@@ -20,6 +20,7 @@ public class Forecast {
     private String mLocationName;
     private Hour[] mHourlyForecast;
     private Day[] mDailyForecast;
+    private Local[] mLocalForecast;
 
     public Current getCurrent() {
         return mCurrent;
@@ -41,6 +42,14 @@ public class Forecast {
         return mDailyForecast;
     }
 
+    public void setLocalForecast(Local[] localForecast) {
+        mLocalForecast = localForecast;
+    }
+
+    public Local[] getLocalForecast()
+    {
+        return mLocalForecast;
+    }
     public void setDailyForecast(Day[] dailyForecast) {
         mDailyForecast = dailyForecast;
     }

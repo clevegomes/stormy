@@ -7,6 +7,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,11 +35,14 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import gomescleve.com.stormy.R;
 import gomescleve.com.stormy.sensors.GPSTracker;
+import gomescleve.com.stormy.sensors.Humidity;
+import gomescleve.com.stormy.sensors.Pressure;
 import gomescleve.com.stormy.sensors.Temperature;
 import gomescleve.com.stormy.weather.Current;
 import gomescleve.com.stormy.weather.Day;
 import gomescleve.com.stormy.weather.Forecast;
 import gomescleve.com.stormy.weather.Hour;
+import gomescleve.com.stormy.weather.Local;
 
 import static android.hardware.Sensor.TYPE_AMBIENT_TEMPERATURE;
 
@@ -46,10 +51,13 @@ public class StormyActivity extends AppCompatActivity {
     public static final String TAG = StormyActivity.class.getSimpleName();
     public static final String DAILY_FORECAST = "DAILY_FORECAST";
     public static final String HOURLY_FORECAST = "HOURLY_FORECAST";
+    public static final String LOCAL_FORECAST = "LOCAL_FORECAST";
 
 
     private Forecast mForecast;
     private Temperature mTemperature;
+    private Humidity mHumidity;
+    private Pressure mPressure;
     public GPSTracker gps;
 
 
@@ -73,13 +81,16 @@ public class StormyActivity extends AppCompatActivity {
         final double latitude;
         final double longitude;
 
-
-        mTemperature = new Temperature(this);
-        mTemperature.register();
-
+//        mTemperature = new Temperature(this);
+//        mTemperature.register();
 
 
+        mHumidity = new Humidity(this);
+        mHumidity.register();
 
+
+        mPressure = new Pressure(this);
+        mPressure.register();
         gps =new GPSTracker(this);
 
         if(gps.canGetLocation())
@@ -106,17 +117,49 @@ public class StormyActivity extends AppCompatActivity {
         mRefreshImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getForecast(latitude,longitude);
+                getForecast(latitude, longitude);
             }
         });
+
+
+//        runThread();
+
 
         getForecast(latitude,longitude);
         Log.d(TAG, "Main UI code is running");
 
     }
 
+
+
+//    private void runThread() {
+//
+//        new Thread() {
+//            public void run() {
+//
+//                    try {
+//                        Thread.sleep(300);
+//
+//                        runOnUiThread(new Runnable() {
+//
+//                            @Override
+//                            public void run() {
+//                                float mHumidityVal = mHumidity.getHumiditySensor();
+//                              //  Toast.makeText(getApplicationContext(), mHumidityVal + "-", Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//            }
+//        }.start();
+//    }
+
     private void getForecast(double latitude ,double longitude) {
         String apiKey = "a02a2ffdbd7babb8a71f8fd8dc06de9e";
+
+
 
 
         String forcastURL = "https://api.forecast.io/forecast/"+apiKey+"/"+latitude+","+longitude;
@@ -158,10 +201,12 @@ public class StormyActivity extends AppCompatActivity {
                         Log.v(TAG, jsonData);
 
                         if (response.isSuccessful()) {
+
                             mForecast = parseForecastDetails(jsonData);
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+
                                     updateDisplay();
                                 }
                             });
@@ -184,6 +229,9 @@ public class StormyActivity extends AppCompatActivity {
         {
             Toast.makeText(this, R.string.network_unavailable_message, Toast.LENGTH_LONG).show();
         }
+
+
+
     }
 
     private void toggleRefreshBar() {
@@ -203,8 +251,12 @@ public class StormyActivity extends AppCompatActivity {
     private void updateDisplay() {
 
 
-        float mTemperatureValue = mTemperature.getTemperatureSensor();
-        Toast.makeText(getApplicationContext(), mTemperatureValue+"", Toast.LENGTH_SHORT).show();
+//        float mTemperatureValue = mTemperature.getTemperatureSensor();
+//        Toast.makeText(getApplicationContext(), mTemperatureValue+"", Toast.LENGTH_SHORT).show();
+
+
+
+
 
 
         Current current = mForecast.getCurrent();
@@ -343,6 +395,14 @@ public class StormyActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(this,DailyForecastActivity.class);
         intent.putExtra(DAILY_FORECAST,mForecast.getDailyForecast());
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.localButton)
+    public void startLocalActivity(View view)
+    {
+        Intent intent = new Intent(this,LocalActivity.class);
+//        intent.putExtra(LOCAL_FORECAST,mForecast.getLocalForecast());
         startActivity(intent);
     }
 

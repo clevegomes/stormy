@@ -168,6 +168,14 @@
             android:text="7 DAY"
             android:layout_weight="1"
             android:id="@+id/dailyButton"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#40FFFFFF"
+            android:textColor="#FFFFFFFF"
+            android:text="Local"
+            android:layout_weight="1"
+            android:id="@+id/localButton"/>
     </LinearLayout>
 
 

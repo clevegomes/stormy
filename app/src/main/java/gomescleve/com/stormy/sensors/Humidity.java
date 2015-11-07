@@ -7,49 +7,43 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.widget.Toast;
 
-import static android.hardware.Sensor.TYPE_AMBIENT_TEMPERATURE;
-
 /**
- * Created by Developer1 on 04/11/2015.
+ * Created by Cleve on 11/7/2015.
  */
-public class Temperature implements SensorEventListener {
+public class Humidity implements SensorEventListener {
+
 
     private Context mContext;
     private SensorManager mSensorManager;
-    private  Sensor mTemperatureSensor;
-    private int mTemperatureValue;
+    private  Sensor mHumiditySensor;
+    private int mHumidityValue;
 
+    public Humidity(Context context) {
 
-    public Temperature(Context context) {
 
         mContext = context;
         mSensorManager = (SensorManager)mContext.getSystemService(mContext.SENSOR_SERVICE);
-        mTemperatureSensor =  mSensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
-
-
-
+        mHumiditySensor =  mSensorManager.getDefaultSensor(Sensor.TYPE_RELATIVE_HUMIDITY);
     }
 
-    public int getTemperatureSensor()
+
+    public int getHumiditySensor()
     {
 
-        return mTemperatureValue;
+        return mHumidityValue;
     }
+
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-
-
-//        Toast.makeText(mContext,"temperature:"+event.values[0], Toast.LENGTH_SHORT).show();
-
 
         try {
             Thread.sleep(16);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        mTemperatureValue = (int)Math.round(event.values[0]);
-//        Toast.makeText(mContext, mTemperatureValue + "", Toast.LENGTH_LONG).show();
+        mHumidityValue = (int)Math.round(event.values[0]);
+//        Toast.makeText(mContext,mHumidityValue+"",Toast.LENGTH_LONG).show();
 
     }
 
@@ -58,9 +52,8 @@ public class Temperature implements SensorEventListener {
 
     }
 
-
     public void register(){
-        mSensorManager.registerListener(this, mTemperatureSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(this, mHumiditySensor, SensorManager.SENSOR_DELAY_NORMAL);
 
 
     }
@@ -68,4 +61,6 @@ public class Temperature implements SensorEventListener {
     public void unregister(){
         mSensorManager.unregisterListener(this);
     }
+
+
 }
