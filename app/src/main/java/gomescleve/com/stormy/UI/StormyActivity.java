@@ -1,14 +1,14 @@
 package gomescleve.com.stormy.UI;
 
+
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
-import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -42,9 +42,6 @@ import gomescleve.com.stormy.weather.Current;
 import gomescleve.com.stormy.weather.Day;
 import gomescleve.com.stormy.weather.Forecast;
 import gomescleve.com.stormy.weather.Hour;
-import gomescleve.com.stormy.weather.Local;
-
-import static android.hardware.Sensor.TYPE_AMBIENT_TEMPERATURE;
 
 public class StormyActivity extends AppCompatActivity {
 
@@ -59,6 +56,10 @@ public class StormyActivity extends AppCompatActivity {
     private Humidity mHumidity;
     private Pressure mPressure;
     public GPSTracker gps;
+    int mTValue;
+    int mHValue;
+    int mPValue;
+    Context mContext = this;
 
 
 //    private TextView mTemperatureLabel;
@@ -85,8 +86,11 @@ public class StormyActivity extends AppCompatActivity {
 //        mTemperature.register();
 
 
+        this.doNotify();
+
         mHumidity = new Humidity(this);
         mHumidity.register();
+
 
 
         mPressure = new Pressure(this);
@@ -131,30 +135,55 @@ public class StormyActivity extends AppCompatActivity {
     }
 
 
+    public void doNotify()
+    {
 
-//    private void runThread() {
-//
-//        new Thread() {
-//            public void run() {
-//
-//                    try {
-//                        Thread.sleep(300);
-//
-//                        runOnUiThread(new Runnable() {
-//
-//                            @Override
-//                            public void run() {
-//                                float mHumidityVal = mHumidity.getHumiditySensor();
-//                              //  Toast.makeText(getApplicationContext(), mHumidityVal + "-", Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//            }
-//        }.start();
-//    }
+
+        mTemperature = new Temperature(this);
+        mTemperature.register();
+
+
+        new Thread() {
+            public void run() {
+
+                try {
+
+
+                    Thread.sleep(1000);
+
+                    runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            mTValue = mTemperature.getTemperatureSensor();
+                            mHValue  = mHumidity.getHumiditySensor();
+                            mPValue = mPressure.getPressureSensor();
+
+                            Intent intent = new Intent();
+                            PendingIntent pIntent = PendingIntent.getActivity(mContext, 0, intent, 0);
+                            Notification noti = new Notification.Builder(mContext)
+                                    .setTicker("Local Sensors")
+                                    .setContentTitle("Room Temp is "+mTValue+" C")
+                                    .setContentText("Room Temperature: "+mTValue+" C"+" <br/>Room Pressure: "+mPValue+" mBar <br/>Room Humidity: "+mHValue+" %")
+                                    .setSmallIcon(R.drawable.ic_launcher)
+                                    .setContentIntent(pIntent).getNotification();
+
+                            noti.flags = Notification.FLAG_AUTO_CANCEL;
+
+                            NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+                            notificationManager.notify(0,noti);
+
+                        }
+                    });
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }.start();
+
+
+    }
 
     private void getForecast(double latitude ,double longitude) {
         String apiKey = "a02a2ffdbd7babb8a71f8fd8dc06de9e";
