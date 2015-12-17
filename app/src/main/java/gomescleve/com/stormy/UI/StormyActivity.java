@@ -36,6 +36,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import gomescleve.com.stormy.R;
+import gomescleve.com.stormy.adapters.DBAdapter;
 import gomescleve.com.stormy.sensors.GPSTracker;
 import gomescleve.com.stormy.sensors.Humidity;
 import gomescleve.com.stormy.sensors.Pressure;
@@ -52,7 +53,7 @@ public class StormyActivity extends AppCompatActivity {
     public static final String HOURLY_FORECAST = "HOURLY_FORECAST";
     public static final String LOCAL_FORECAST = "LOCAL_FORECAST";
 
-
+    private DBAdapter myDB;
     private Forecast mForecast;
     private Temperature mTemperature;
     private Humidity mHumidity;
@@ -83,7 +84,7 @@ public class StormyActivity extends AppCompatActivity {
         setContentView(R.layout.stormy);
         final double latitude;
         final double longitude;
-
+        openDB();
 //        mTemperature = new Temperature(this);
 //        mTemperature.register();
 
@@ -101,8 +102,10 @@ public class StormyActivity extends AppCompatActivity {
 
         if(gps.canGetLocation())
         {
-             latitude = gps.getLatitude();
+            latitude = gps.getLatitude();
             longitude = gps.getLongitude();
+            myDB.insertRow(latitude,longitude);
+
             Toast.makeText(getApplicationContext(),"Your Locatiion is - \nLat: "+ latitude+ "\nLong: "+
                     longitude,Toast.LENGTH_SHORT).show();
 
@@ -136,6 +139,23 @@ public class StormyActivity extends AppCompatActivity {
 
     }
 
+
+    private void openDB() {
+        myDB = new DBAdapter(mContext);
+        myDB.open();
+
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        closeDB();
+    }
+
+    private void closeDB() {
+        myDB.close();
+    }
 
     public void doNotify()
     {

@@ -21,6 +21,7 @@ public class LocalAdapter extends RecyclerView.Adapter<LocalAdapter.LocalViewHol
     private Context mContext;
 
 
+
     public LocalAdapter(Context context,Local[] local) {
         mLocal = local;
         mContext = context;
@@ -29,6 +30,7 @@ public class LocalAdapter extends RecyclerView.Adapter<LocalAdapter.LocalViewHol
     @Override
     public LocalViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
+
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.local_list_item,parent,false);
         LocalViewHolder viewHolder =  new LocalViewHolder(view);
@@ -36,6 +38,10 @@ public class LocalAdapter extends RecyclerView.Adapter<LocalAdapter.LocalViewHol
         return viewHolder;
 
     }
+
+
+
+
 
     @Override
     public void onBindViewHolder(LocalViewHolder holder, int position) {
