@@ -1,15 +1,18 @@
 package gomescleve.com.stormy.UI;
 
 
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -59,9 +62,12 @@ public class StormyActivity extends AppCompatActivity {
     private Humidity mHumidity;
     private Pressure mPressure;
     public GPSTracker gps;
+    public  NotificationManager NM;
+    int notifyID = 0;
     int mTValue;
     int mHValue;
     int mPValue;
+    boolean isNotificActive;
     Context mContext = this;
 
 
@@ -84,27 +90,21 @@ public class StormyActivity extends AppCompatActivity {
         setContentView(R.layout.stormy);
         final double latitude;
         final double longitude;
-        openDB();
+//        openDB();
 //        mTemperature = new Temperature(this);
 //        mTemperature.register();
 
 
-        this.doNotify();
-
-        mHumidity = new Humidity(this);
-        mHumidity.register();
+        this.showNotofication();
 
 
-
-        mPressure = new Pressure(this);
-        mPressure.register();
         gps =new GPSTracker(this);
 
         if(gps.canGetLocation())
         {
             latitude = gps.getLatitude();
             longitude = gps.getLongitude();
-            myDB.insertRow(latitude,longitude);
+
 
             Toast.makeText(getApplicationContext(),"Your Locatiion is - \nLat: "+ latitude+ "\nLong: "+
                     longitude,Toast.LENGTH_SHORT).show();
@@ -115,6 +115,12 @@ public class StormyActivity extends AppCompatActivity {
             gps.showSettingAlert();
             latitude = 37.8267;
             longitude = -122.423;
+//            myDB.insertRow(latitude, longitude);
+
+//            Cursor cursor = myDB.getAllRows();
+//            cursor.moveToFirst();
+//            Double dblat = cursor.getDouble(1);
+//            Double dblong = cursor.getDouble(2);
         }
 
 
@@ -154,16 +160,23 @@ public class StormyActivity extends AppCompatActivity {
     }
 
     private void closeDB() {
-        myDB.close();
+//        myDB.close();
     }
 
-    public void doNotify()
+    public void showNotofication()
     {
 
 
         mTemperature = new Temperature(this);
         mTemperature.register();
 
+        mHumidity = new Humidity(this);
+        mHumidity.register();
+
+
+
+        mPressure = new Pressure(this);
+        mPressure.register();
 
         new Thread() {
             public void run() {
@@ -175,17 +188,18 @@ public class StormyActivity extends AppCompatActivity {
 
                     runOnUiThread(new Runnable() {
 
+                        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                         @Override
                         public void run() {
+
                             mTValue = mTemperature.getTemperatureSensor();
                             mPValue = mPressure.getPressureSensor();
-                            mHValue= mHumidity.getHumiditySensor();
-
-
+                            mHValue = mHumidity.getHumiditySensor();
 
                             NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext);
                             builder.setSmallIcon(R.drawable.ic_launcher);
-                            builder.setContentTitle("Room Temp is " + mTValue+" C");
+                            builder.setContentTitle("Room Temp is " + mTValue + " C");
+                            builder.setTicker("Room Temp is " + mTValue+" C");
                             builder.setContentText("Pressure: " + mPValue + " mBar, Humidity: "+mHValue+" %");
 
 
@@ -195,10 +209,15 @@ public class StormyActivity extends AppCompatActivity {
                             stackBuilder.addParentStack(LocalActivity.class);
                             stackBuilder.addNextIntent(intent);
                             PendingIntent pendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
+
+                            /**
+                             * When the intent is clicked on the pending intent is opened
+                             */
                             builder.setContentIntent(pendingIntent);
 
-                            NotificationManager NM = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                            NM.notify(0,builder.build());
+                            NM = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                            NM.notify(notifyID,builder.build());
+                            isNotificActive = true;
 
 
                         }
@@ -212,6 +231,17 @@ public class StormyActivity extends AppCompatActivity {
 
 
     }
+
+
+    public void stopNotification()
+    {
+
+        if(isNotificActive)
+        {
+            NM.cancel(notifyID);
+        }
+    }
+
 
     private void getForecast(double latitude ,double longitude) {
         String apiKey = "a02a2ffdbd7babb8a71f8fd8dc06de9e";
