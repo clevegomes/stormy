@@ -2,6 +2,7 @@ package gomescleve.com.stormy.UI;
 
 
 import android.annotation.TargetApi;
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -34,6 +35,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.GregorianCalendar;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -95,7 +97,8 @@ public class StormyActivity extends AppCompatActivity {
 //        mTemperature.register();
 
 
-        this.showNotofication();
+//        this.showNotofication();
+        this.setAlarm();
 
 
         gps =new GPSTracker(this);
@@ -161,6 +164,21 @@ public class StormyActivity extends AppCompatActivity {
 
     private void closeDB() {
 //        myDB.close();
+    }
+
+    public void setAlarm ()
+    {
+
+        Long alertTime = new GregorianCalendar().getTimeInMillis()+5*1000;
+
+        Intent alertIntent = new Intent(this,AlertReceiver.class);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP,alertTime,PendingIntent.getBroadcast(mContext,1,alertIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT));
+
+
     }
 
     public void showNotofication()
