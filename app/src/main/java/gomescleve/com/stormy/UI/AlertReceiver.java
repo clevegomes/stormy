@@ -6,8 +6,14 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
+
+import com.squareup.okhttp.Call;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
 
 import java.util.Random;
 
@@ -52,14 +58,15 @@ public class AlertReceiver  extends BroadcastReceiver {
 
                     Thread.sleep(1000);
 
-
+                    saveLocalSensorServer(mTemperature.getTemperatureSensor(),mPressure.getPressureSensor(),mHumidity.getHumiditySensor());
                     createNotification(context,"Room Temp is " + mTemperature.getTemperatureSensor() + " C","Pressure: " + mPressure.getPressureSensor() + " mBar, Humidity: "+mHumidity.getHumiditySensor()+" %","Room Temp is " + mTemperature.getTemperatureSensor() + " C");
+
 
                 } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
             }
-            }.start();
+        }.start();
 
     }
 
@@ -80,7 +87,27 @@ public class AlertReceiver  extends BroadcastReceiver {
 
         mBuilder.setAutoCancel(true);
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(1,mBuilder.build());
+        mNotificationManager.notify(1, mBuilder.build());
 
     }
+
+
+
+
+
+
+
+    private void saveLocalSensorServer(int temperature,int pressure,int humidity)
+    {
+        String apiKey= "cglocalsensor";
+        String serverURL = "https://api.forecast.io/forecast/"+apiKey+"/"+temperature+","+humidity+","+pressure;
+
+
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder().url(serverURL).build();
+            Call call = client.newCall(request);
+
+    }
+
+
 }

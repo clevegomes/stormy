@@ -188,7 +188,8 @@ public class StormyActivity extends AppCompatActivity {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext,1,alertIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),alertTime,pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), alertTime, pendingIntent);
+
 
 //        alarmManager.set(AlarmManager.RTC_WAKEUP,alertTime,PendingIntent.getBroadcast(mContext,1,alertIntent,
 //                PendingIntent.FLAG_UPDATE_CURRENT));
@@ -274,6 +275,7 @@ public class StormyActivity extends AppCompatActivity {
             NM.cancel(notifyID);
         }
     }
+
 
 
     private void getForecast(double latitude ,double longitude) {
