@@ -166,17 +166,32 @@ public class StormyActivity extends AppCompatActivity {
 //        myDB.close();
     }
 
+
+    @OnClick(R.id.stopAlarmButton)
+    public void stopAlarm(View view)
+    {
+        Intent alertIntent = new Intent(this,AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext,1,alertIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
+        Toast.makeText(this,"Stopped auto refresh",Toast.LENGTH_SHORT).show();
+    }
+
     public void setAlarm ()
     {
 
-        Long alertTime = new GregorianCalendar().getTimeInMillis()+5*1000;
-
+//        Long alertTime = new GregorianCalendar().getTimeInMillis()+5*1000;
+        //Alarm will run every 30 seconds
+          int alertTime =  1000 * 30 ;
+        Toast.makeText(this,"Started auto refresh for every hour",Toast.LENGTH_SHORT).show();
         Intent alertIntent = new Intent(this,AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext,1,alertIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),alertTime,pendingIntent);
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP,alertTime,PendingIntent.getBroadcast(mContext,1,alertIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT));
+//        alarmManager.set(AlarmManager.RTC_WAKEUP,alertTime,PendingIntent.getBroadcast(mContext,1,alertIntent,
+//                PendingIntent.FLAG_UPDATE_CURRENT));
 
 
     }

@@ -7,6 +7,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
+import android.widget.Toast;
+
+import java.util.Random;
+
 import gomescleve.com.stormy.R;
 import gomescleve.com.stormy.sensors.Humidity;
 import gomescleve.com.stormy.sensors.Pressure;
@@ -25,7 +29,7 @@ public class AlertReceiver  extends BroadcastReceiver {
     int mPValue;
 
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(final Context context, Intent intent) {
 
 
         mTemperature = new Temperature(context);
@@ -39,12 +43,24 @@ public class AlertReceiver  extends BroadcastReceiver {
         mPressure.register();
 
 
-         mTValue = mTemperature.getTemperatureSensor();
-         mPValue = mPressure.getPressureSensor();
-         mHValue = mHumidity.getHumiditySensor();
+
+        new Thread() {
+            public void run()
+            {
+                try {
 
 
-        createNotification(context,"Room Temp is " + mTValue + " C","Pressure: " + mPValue + " mBar, Humidity: "+mHValue+" %","Room Temp is " + mTValue + " C");
+                    Thread.sleep(1000);
+
+
+                    createNotification(context,"Room Temp is " + mTemperature.getTemperatureSensor() + " C","Pressure: " + mPressure.getPressureSensor() + " mBar, Humidity: "+mHumidity.getHumiditySensor()+" %","Room Temp is " + mTemperature.getTemperatureSensor() + " C");
+
+                } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+            }
+            }.start();
+
     }
 
     private void createNotification(Context context, String msg, String msgText, String msgAlert) {
