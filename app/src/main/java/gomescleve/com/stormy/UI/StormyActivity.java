@@ -181,9 +181,9 @@ public class StormyActivity extends AppCompatActivity {
     {
 
 //        Long alertTime = new GregorianCalendar().getTimeInMillis()+5*1000;
-        //Alarm will run every 30 seconds
-          int alertTime =  1000 * 30 ;
-        Toast.makeText(this,"Started auto refresh for every hour",Toast.LENGTH_SHORT).show();
+        //Alarm will run every 5 mins
+          int alertTime =  1000 * 60 * 5 ;
+        Toast.makeText(this,"Started auto refresh",Toast.LENGTH_SHORT).show();
         Intent alertIntent = new Intent(this,AlertReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext,1,alertIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -284,10 +284,16 @@ public class StormyActivity extends AppCompatActivity {
 
 
 
+
         String forcastURL = "https://api.forecast.io/forecast/"+apiKey+"/"+latitude+","+longitude;
         if(isNetworkAvailable()) {
 
             toggleRefreshBar();
+
+
+
+
+
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
                     .url(forcastURL)
@@ -345,6 +351,12 @@ public class StormyActivity extends AppCompatActivity {
                     }
                 }
             });
+
+
+
+
+
+
 
         }
         else
@@ -492,6 +504,8 @@ public class StormyActivity extends AppCompatActivity {
 
     private boolean isNetworkAvailable() {
 
+
+
         ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo =  manager.getActiveNetworkInfo();
         boolean isAvailable = false;
@@ -500,7 +514,9 @@ public class StormyActivity extends AppCompatActivity {
             isAvailable =true;
         }
 
+
         return isAvailable;
+
 
     }
 

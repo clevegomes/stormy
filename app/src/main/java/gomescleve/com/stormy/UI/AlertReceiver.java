@@ -63,8 +63,8 @@ public class AlertReceiver  extends BroadcastReceiver {
 
 
                 } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    e.printStackTrace();
+                }
             }
         }.start();
 
@@ -74,7 +74,7 @@ public class AlertReceiver  extends BroadcastReceiver {
 
         PendingIntent notificIntent = PendingIntent.getActivity(context,0,
                 new Intent(context,StormyActivity.class),0
-                );
+        );
 
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
@@ -83,7 +83,7 @@ public class AlertReceiver  extends BroadcastReceiver {
         mBuilder.setTicker(msgAlert);
         mBuilder.setContentText(msgText);
         mBuilder.setContentIntent(notificIntent);
-        mBuilder.setDefaults(NotificationCompat.DEFAULT_SOUND);
+//        mBuilder.setDefaults(NotificationCompat.DEFAULT_SOUND);
 
         mBuilder.setAutoCancel(true);
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -103,9 +103,9 @@ public class AlertReceiver  extends BroadcastReceiver {
         String serverURL = "https://api.forecast.io/forecast/"+apiKey+"/"+temperature+","+humidity+","+pressure;
 
 
-            OkHttpClient client = new OkHttpClient();
-            Request request = new Request.Builder().url(serverURL).build();
-            Call call = client.newCall(request);
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(serverURL).build();
+        Call call = client.newCall(request);
 
     }
 
