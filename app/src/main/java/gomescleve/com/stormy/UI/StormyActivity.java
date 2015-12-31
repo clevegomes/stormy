@@ -181,8 +181,8 @@ public class StormyActivity extends AppCompatActivity {
     {
 
 //        Long alertTime = new GregorianCalendar().getTimeInMillis()+5*1000;
-        //Alarm will run every 30 seconds
-          int alertTime =  1000 * 30 ;
+        //Alarm will run every 5 min
+          int alertTime =  1000 * 60 * 5 ;
         Toast.makeText(this,"Started auto refresh for every hour",Toast.LENGTH_SHORT).show();
         Intent alertIntent = new Intent(this,AlertReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext,1,alertIntent,PendingIntent.FLAG_UPDATE_CURRENT);
@@ -280,8 +280,6 @@ public class StormyActivity extends AppCompatActivity {
 
     private void getForecast(double latitude ,double longitude) {
         String apiKey = "a02a2ffdbd7babb8a71f8fd8dc06de9e";
-
-
 
 
         String forcastURL = "https://api.forecast.io/forecast/"+apiKey+"/"+latitude+","+longitude;

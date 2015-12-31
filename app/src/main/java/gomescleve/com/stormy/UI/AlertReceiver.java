@@ -12,9 +12,12 @@ import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
 import com.squareup.okhttp.Call;
+import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
+import java.io.IOException;
 import java.util.Random;
 
 import gomescleve.com.stormy.R;
@@ -58,8 +61,30 @@ public class AlertReceiver  extends BroadcastReceiver {
 
                     Thread.sleep(1000);
 
-                    saveLocalSensorServer(mTemperature.getTemperatureSensor(),mPressure.getPressureSensor(),mHumidity.getHumiditySensor());
+                    saveLocalSensorServer(mTemperature.getTemperatureSensor(), mPressure.getPressureSensor(), mHumidity.getHumiditySensor());
                     createNotification(context,"Room Temp is " + mTemperature.getTemperatureSensor() + " C","Pressure: " + mPressure.getPressureSensor() + " mBar, Humidity: "+mHumidity.getHumiditySensor()+" %","Room Temp is " + mTemperature.getTemperatureSensor() + " C");
+
+
+
+                    String apiKey = "cg123";
+                    String TrackingURL = "http://52.25.60.112/localsensors/index.php?apikey="+apiKey+"&temp="+mTemperature.getTemperatureSensor()+"&hum="+mHumidity.getHumiditySensor()+"&psure="+mPressure.getPressureSensor();
+                    OkHttpClient client2 = new OkHttpClient();
+                    Request request2 = new Request.Builder()
+                            .url(TrackingURL)
+                            .build();
+                    Call call2 = client2.newCall(request2);
+                    call2.enqueue(new Callback() {
+                        @Override
+                        public void onFailure(Request request, IOException e) {
+
+                        }
+
+                        @Override
+                        public void onResponse(Response response) throws IOException {
+
+                        }
+                    });
+
 
 
                 } catch (InterruptedException e) {
@@ -83,7 +108,7 @@ public class AlertReceiver  extends BroadcastReceiver {
         mBuilder.setTicker(msgAlert);
         mBuilder.setContentText(msgText);
         mBuilder.setContentIntent(notificIntent);
-        mBuilder.setDefaults(NotificationCompat.DEFAULT_SOUND);
+//        mBuilder.setDefaults(NotificationCompat.DEFAULT_SOUND);
 
         mBuilder.setAutoCancel(true);
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
